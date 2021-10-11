@@ -5,6 +5,7 @@ import {
   getNetworkName,
   isNetworkDataPoint,
 } from "./networkUtils.mjs";
+import { debounce } from "https://unpkg.com/throttle-debounce@3.0.1/esm/index.js?module";
 
 window._aborters = [];
 window.markerGroup = null;
@@ -59,56 +60,58 @@ trackUserLocation((position, id) => {
   }
 });
 
-map.on("moveend", async () => {
-  document.getElementById("loading-message").classList.add("show");
+map.on(
+  "moveend",
+  debounce(1000, async () => {
+    document.getElementById("loading-message").classList.add("show");
 
-  if (map.getCenter().equals(geolocationMarker.marker.getLatLng(), 0.00001)) {
-    markLocated();
-  } else {
-    markUnlocated();
-  }
+    if (map.getCenter().equals(geolocationMarker.marker.getLatLng(), 0.00001)) {
+      markLocated();
+    } else {
+      markUnlocated();
+    }
 
-  const bounds = map.getBounds();
-  const zoom = map.getZoom();
+    const bounds = map.getBounds();
+    const zoom = map.getZoom();
 
-  if (zoom < 13) {
+    if (zoom < 13) {
+      document.getElementById("loading-message").classList.remove("show");
+      document.getElementById("please-zoom-message").classList.add("show");
+      return;
+    }
+
+    const bbString = bounds.toBBoxString();
+    const dataPoints = (await fetchPoints(bbString))?.filter?.(
+      isNetworkDataPoint
+    );
+
     document.getElementById("loading-message").classList.remove("show");
-    document.getElementById("please-zoom-message").classList.add("show");
-    return;
-  }
 
-  const bbString = bounds.toBBoxString();
-  const dataPoints = (await fetchPoints(bbString))?.filter?.(
-    isNetworkDataPoint
-  );
+    if (dataPoints === false) {
+      document.getElementById("failed-message").classList.add("show");
+      return;
+    } else {
+      document.getElementById("failed-message").classList.remove("show");
+    }
 
-  document.getElementById("loading-message").classList.remove("show");
+    if (dataPoints === undefined) {
+      document.getElementById("please-zoom-message").classList.add("show");
+      return;
+    } else {
+      document.getElementById("please-zoom-message").classList.remove("show");
+    }
 
-  if (dataPoints === false) {
-    document.getElementById("failed-message").classList.add("show");
-    return;
-  } else {
-    document.getElementById("failed-message").classList.remove("show");
-  }
+    window.markerGroup?.clearLayers();
 
-  if (dataPoints === undefined) {
-    document.getElementById("please-zoom-message").classList.add("show");
-    return;
-  } else {
-    document.getElementById("please-zoom-message").classList.remove("show");
-  }
+    window.markerGroup = L.layerGroup().addTo(map);
 
-  window.markerGroup?.clearLayers();
-
-  window.markerGroup = L.layerGroup().addTo(map);
-
-  dataPoints.map((point) => {
-    const name = getNetworkName(point);
-    L.marker([point.latitude, point.longitude], {
-      icon: getNetworkIcon(point),
-    })
-      .bindPopup(
-        `
+    dataPoints.map((point) => {
+      const name = getNetworkName(point);
+      L.marker([point.latitude, point.longitude], {
+        icon: getNetworkIcon(point),
+      })
+        .bindPopup(
+          `
           <h1>${name} works</h1>
           <p>
             ${dayjs
@@ -129,7 +132,8 @@ map.on("moveend", async () => {
           <h2>Promoter</h2>
           <p>${point.promoter || "None provided"}</p>
         `
-      )
-      .addTo(window.markerGroup);
-  });
-});
+        )
+        .addTo(window.markerGroup);
+    });
+  })
+);
