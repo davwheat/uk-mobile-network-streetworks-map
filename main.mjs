@@ -7,6 +7,13 @@ import {
 } from "./networkUtils.mjs";
 import { debounce } from "https://unpkg.com/throttle-debounce@3.0.1/esm/index.js?module";
 
+import dayjs from "https://unpkg.com/dayjs@1.10.7/esm/index.js?module";
+import dayjs_tz from "https://unpkg.com/dayjs@1.10.7/esm/plugin/timezone/index.js?module";
+import dayjs_utc from "https://unpkg.com/dayjs@1.10.7/esm/plugin/utc/index.js?module";
+
+dayjs.extend(dayjs_tz);
+dayjs.extend(dayjs_utc);
+
 window._aborters = [];
 window.markerGroup = null;
 
