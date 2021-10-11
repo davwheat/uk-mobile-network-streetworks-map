@@ -30,7 +30,7 @@ const geolocationMarker = {
 };
 
 map.attributionControl.setPrefix(
-  `<a href="https://github.com/davwheat/uk-mobile-network-streetworks-map">This project is open source!</a>`
+  `<a style="font-weight:bold;" href="https://github.com/davwheat/uk-mobile-network-streetworks-map">This project is open source!</a>`
 );
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -38,6 +38,10 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
 }).addTo(map);
+
+map.attributionControl.addAttribution(
+  `&copy; <a href="https://one.network">one.network</a>`
+);
 
 L.control.scale({ imperial: true, metric: true }).addTo(map);
 
