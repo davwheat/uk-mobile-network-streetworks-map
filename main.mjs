@@ -11,7 +11,15 @@ window.markerGroup = null;
 
 const map = L.map("map").setView([51.505, -0.09], 13);
 
-const geolocationMarker = { marker: L.marker([0, 0]), added: false };
+const geolocationMarker = {
+  marker: L.marker([0, 0], {
+    icon: L.icon({
+      iconUrl: "geo.svg",
+      iconSize: [18, 18],
+    }),
+  }),
+  added: false,
+};
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
