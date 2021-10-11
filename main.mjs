@@ -125,6 +125,9 @@ map.on("moveend", async () => {
             
           <h2>Work permit ref</h2>
           <p>${point.permit_ref || "None provided"}</p>
+            
+          <h2>Promoter</h2>
+          <p>${point.promoter || "None provided"}</p>
         `
       )
       .addTo(window.markerGroup);
