@@ -29,6 +29,10 @@ const geolocationMarker = {
   added: false,
 };
 
+map.attributionControl.setPrefix(
+  `<a href="https://github.com/davwheat/uk-mobile-network-streetworks-map">This project is open source!</a>`
+);
+
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution:
