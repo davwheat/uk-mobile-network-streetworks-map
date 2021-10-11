@@ -120,7 +120,11 @@ map.on("moveend", async () => {
               .format("DD MMM 'YY HH:mm")}
           </p>
             
-          <p>${point.works_desc}</p>
+          <h2>Work description</h2>
+          <p>${point.works_desc || "None provided"}</p>
+            
+          <h2>Work permit ref</h2>
+          <p>${point.permit_ref || "None provided"}</p>
         `
       )
       .addTo(window.markerGroup);
