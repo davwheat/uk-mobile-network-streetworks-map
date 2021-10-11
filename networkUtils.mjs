@@ -1,17 +1,8 @@
 export const networkAliases = {
   o2: ["O2", "02", "O 2", "Telefonica", "Telefónica"],
   vf: ["Vodafone", "Vodaphone"],
-  "3/EE": ["T-Mobile", "T Mobile", "Three", "3", "Hutchinson", "EE"],
+  "3/EE": ["T-Mobile", "T Mobile"],
   ctil: ["CTIL", "cornerstone", "corner stone"],
-  // 3: ["3", "H3", "Hutchinson", "Three"],
-  // mbnl: ["MBNL", "Mobile Broadband Network"],
-  // ee: [
-  //   "EE",
-  //   "Everything Everywhere",
-  //   "EverythingEverywhere",
-  //   "T Mobile",
-  //   "T-Mobile",
-  // ],
 };
 
 const networkIcons = {
