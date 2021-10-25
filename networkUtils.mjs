@@ -1,25 +1,25 @@
-export const networkAliases = {
+export const promoterAliases = {
   o2: ["O2", "02", "O 2", "Telefonica", "Telefónica"],
   vf: ["Vodafone", "Vodaphone"],
   "3/EE": ["T-Mobile", "T Mobile"],
   ctil: ["CTIL", "cornerstone", "corner stone"],
 };
 
-const networkIcons = {
-  o2: createIcon("O2"),
-  vf: createIcon("VF"),
-  "3/EE": createIcon("3/EE"),
-  ctil: createIcon("CTIL"),
+const promoterIcons = {
+  o2: createPromoterIcon("O2"),
+  vf: createPromoterIcon("VF"),
+  "3/EE": createPromoterIcon("3/EE"),
+  ctil: createPromoterIcon("CTIL"),
 };
 
-const networkNames = {
+const promoterNames = {
   o2: "O2",
   vf: "Vodafone",
   "3/EE": "Three/EE",
   ctil: "Cornerstone",
 };
 
-function createIcon(name) {
+function createPromoterIcon(name) {
   return L.divIcon({
     html: `<b>${name.toUpperCase()}</b><span></span>`,
     className: "network-icon",
@@ -28,11 +28,11 @@ function createIcon(name) {
   });
 }
 
-function getNetworkId(dataPoint) {
+function getPromoterId(dataPoint) {
   const name = dataPoint.promoter.toLowerCase();
 
-  return Object.keys(networkAliases).find((key) => {
-    const aliases = networkAliases[key];
+  return Object.keys(promoterAliases).find((key) => {
+    const aliases = promoterAliases[key];
     return aliases.some((x) => name.includes(x.toLowerCase()));
   });
 }
@@ -40,17 +40,17 @@ function getNetworkId(dataPoint) {
 /**
  * @param {string} name
  */
-export function getNetworkIcon(dataPoint) {
-  return networkIcons[getNetworkId(dataPoint)];
+export function getPromoterIcon(dataPoint) {
+  return promoterIcons[getPromoterId(dataPoint)];
 }
 
 /**
  * @param {string} name
  */
-export function getNetworkName(dataPoint) {
-  return networkNames[getNetworkId(dataPoint)];
+export function getPromoterName(dataPoint) {
+  return promoterNames[getPromoterId(dataPoint)];
 }
 
-export function isNetworkDataPoint(dataPoint) {
-  return getNetworkId(dataPoint) !== undefined;
+export function isPromoterDataPoint(dataPoint) {
+  return getPromoterId(dataPoint) !== undefined;
 }
