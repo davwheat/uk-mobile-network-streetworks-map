@@ -6,23 +6,17 @@ export const networkAliases = {
 };
 
 const networkIcons = {
-  o2: createIcon("o2"),
-  vf: createIcon("vf"),
-  ctil: createIcon("ctil"),
+  o2: createIcon("O2"),
+  vf: createIcon("VF"),
   "3/EE": createIcon("3/EE"),
-  3: createIcon("3"),
-  mbnl: createIcon("mbnl"),
-  ee: createIcon("ee"),
+  ctil: createIcon("CTIL"),
 };
 
 const networkNames = {
   o2: "O2",
   vf: "Vodafone",
-  ctil: "Cornerstone",
   "3/EE": "Three/EE",
-  3: "Three UK",
-  ee: "EE",
-  mbnl: "MBNL",
+  ctil: "Cornerstone",
 };
 
 function createIcon(name) {
