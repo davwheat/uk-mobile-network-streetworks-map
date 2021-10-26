@@ -1,9 +1,9 @@
 import { fetchPoints } from "./fetchPoints.mjs";
 import { trackUserLocation } from "./getUserLocation.mjs";
 import {
-  getNetworkIcon,
-  getNetworkName,
-  isNetworkDataPoint,
+  getPromoterIcon,
+  getPromoterName,
+  isPromoterDataPoint,
 } from "./networkUtils.mjs";
 import { debounce } from "https://unpkg.com/throttle-debounce@3.0.1/esm/index.js?module";
 
@@ -97,7 +97,7 @@ map.on(
 
     const bbString = bounds.toBBoxString();
     const dataPoints = (await fetchPoints(bbString))?.filter?.(
-      isNetworkDataPoint
+      isPromoterDataPoint
     );
 
     document.getElementById("loading-message").classList.remove("show");
@@ -121,9 +121,9 @@ map.on(
     window.markerGroup = L.layerGroup().addTo(map);
 
     dataPoints.map((point) => {
-      const name = getNetworkName(point);
+      const name = getPromoterName(point);
       L.marker([point.latitude, point.longitude], {
-        icon: getNetworkIcon(point),
+        icon: getPromoterIcon(point),
       })
         .bindPopup(
           `
