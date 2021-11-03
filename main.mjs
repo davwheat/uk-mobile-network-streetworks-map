@@ -10,14 +10,15 @@ import { debounce } from "https://unpkg.com/throttle-debounce@3.0.1/esm/index.js
 import dayjs from "https://unpkg.com/dayjs@1.10.7/esm/index.js?module";
 import dayjs_tz from "https://unpkg.com/dayjs@1.10.7/esm/plugin/timezone/index.js?module";
 import dayjs_utc from "https://unpkg.com/dayjs@1.10.7/esm/plugin/utc/index.js?module";
+import DataMarker from "./DataMarker.mjs";
 
 dayjs.extend(dayjs_tz);
 dayjs.extend(dayjs_utc);
 
-window._aborters = [];
-window.markerGroup = null;
-
 const map = L.map("map").setView([51.505, -0.09], 13);
+
+window._aborters = [];
+window.markerGroup = L.layerGroup().addTo(map);
 
 const geolocationMarker = {
   marker: L.marker([0, 0], {
@@ -116,13 +117,27 @@ map.on(
       document.getElementById("please-zoom-message").classList.remove("show");
     }
 
-    window.markerGroup?.clearLayers();
+    /**
+     * @type {DataMarker[]}
+     */
+    const oldMarkers = window.markerGroup?.getLayers() || [];
+    const newPoints = [];
 
-    window.markerGroup = L.layerGroup().addTo(map);
+    dataPoints.forEach((point) => {
+      const matchingOldMarker = oldMarkers.findIndex(
+        (marker) => marker.data.se_id === point.se_id
+      );
 
-    dataPoints.map((point) => {
+      // Remove matching marker
+      if (matchingOldMarker !== -1) oldMarkers.splice(matchingOldMarker, 1);
+      else newPoints.push(point);
+    });
+
+    oldMarkers.forEach((marker) => window.markerGroup.removeLayer(marker));
+
+    newPoints.map((point) => {
       const name = getPromoterName(point);
-      L.marker([point.latitude, point.longitude], {
+      const marker = new DataMarker([point.latitude, point.longitude], point, {
         icon: getPromoterIcon(point),
       })
         .bindPopup(
