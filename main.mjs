@@ -178,27 +178,35 @@ map.on(
             <h2>Permit status</h2>
             <p id="${point.se_id}__permit_status_desc">Loading...</p>
               
-            <!--<h2>Info last updated</h2>
-            <p>${point.promoter || "None provided"}</p>
+            <h2>Works last updated</h2>
+            <p id="${point.se_id}__event_lastmod_date_disp">Loading...</p>
               
-            <h2>Last updated one one.network</h2>
-            <p>${point.promoter || "None provided"}</p>-->
+            <h2>Last updated on one.network</h2>
+            <p id="${point.se_id}__last_adapter_update_disp">Loading...</p>
           `
         )
         .addTo(window.markerGroup)
         .on("popupopen", function (e) {
           console.log("OPENED", e);
 
-          const elementId = `${e.target.data.se_id}__permit_status_desc`;
+          const elementIdPrefix = `${e.target.data.se_id}__`;
 
           getSpecificPointData(
             e.target.data.se_id || e.target.data.entity_id,
             e.target.data.phase_id
           ).then((data) => {
-            const el = document.getElementById(elementId);
-            if (!el) return;
+            const fields = [
+              "permit_status_desc",
+              "event_lastmod_date_disp",
+              "last_adapter_update_disp",
+            ];
 
-            el.innerText = data.swdata.permit_status_desc;
+            fields.forEach((field) => {
+              const el = document.getElementById(`${elementIdPrefix}${field}`);
+              if (!el) return;
+
+              el.innerText = data.swdata[field];
+            });
           });
         });
     });
