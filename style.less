@@ -151,6 +151,24 @@ html {
 }
 
 .leaflet-popup {
+  border-radius: 12px;
+  overflow: hidden;
+
+  .leaflet-container a.leaflet-popup-close-button {
+    right: 16px;
+  }
+
+  &-content {
+    margin: 0;
+    padding: 16px;
+
+    &-wrapper {
+      max-height: calc(90vh - 16px);
+      max-width: calc(90vw - 16px);
+      overflow: auto;
+    }
+  }
+
   h1 {
     font-size: 18px;
     font-weight: bold;
@@ -167,5 +185,13 @@ html {
   p {
     font-size: 14px;
     margin: 8px 0;
+  }
+
+  :first-child {
+    margin-top: 0;
+  }
+
+  :last-child {
+    margin-bottom: 0;
   }
 }
