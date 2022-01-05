@@ -95,6 +95,25 @@ html {
 
 //50x20
 .network-icon {
+  --icon-bg: #fff;
+  --icon-color: #000;
+
+  &__mobile {
+    --icon-bg: rgb(201, 238, 243);
+  }
+
+  &__bt {
+    --icon-bg: rgb(184, 151, 211);
+  }
+
+  &__vm {
+    --icon-bg: rgb(255, 157, 157);
+  }
+
+  &__cityfibre {
+    --icon-bg: rgb(208, 253, 194);
+  }
+
   display: flex;
   flex-direction: column;
 
@@ -115,7 +134,7 @@ html {
 
   b {
     display: block;
-    background: white;
+    background: var(--icon-bg);
     align-self: stretch;
   }
 
@@ -125,7 +144,7 @@ html {
     width: 0;
     height: 0;
 
-    border-top: 8px solid #fff;
+    border-top: 8px solid var(--icon-bg);
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
   }
