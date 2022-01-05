@@ -1,4 +1,4 @@
-import { fetchPoints } from "./fetchPoints.mjs";
+import { fetchPoints, getSpecificPointData } from "./fetchPoints.mjs";
 import { trackUserLocation } from "./getUserLocation.mjs";
 import {
   getPromoterIcon,
@@ -136,34 +136,71 @@ map.on(
     oldMarkers.forEach((marker) => window.markerGroup.removeLayer(marker));
 
     newPoints.map((point) => {
+      console.log(point);
       const name = getPromoterName(point);
+
       const marker = new DataMarker([point.latitude, point.longitude], point, {
         icon: getPromoterIcon(point),
       })
         .bindPopup(
           `
-          <h1>${name} works</h1>
-          <p>
-            ${dayjs
-              .tz(point.start_date, point.start_date_tz)
-              .format("DD MMM 'YY HH:mm")}
-            to
-            ${dayjs
-              .tz(point.end_date, point.end_date_tz)
-              .format("DD MMM 'YY HH:mm")}
-          </p>
-            
-          <h2>Work description</h2>
-          <p>${point.works_desc || "None provided"}</p>
-            
-          <h2>Work permit ref</h2>
-          <p>${point.permit_ref || "None provided"}</p>
-            
-          <h2>Promoter</h2>
-          <p>${point.promoter || "None provided"}</p>
-        `
+            <h1>${name} works</h1>
+            <p>
+              ${dayjs
+                .tz(point.start_date, point.start_date_tz)
+                .format("DD MMM 'YY HH:mm")}
+              to
+              ${dayjs
+                .tz(point.end_date, point.end_date_tz)
+                .format("DD MMM 'YY HH:mm")}
+            </p>
+              
+            <h2>Work description</h2>
+            <p>${point.works_desc || "None provided"}</p>
+              
+            <h2>Work permit ref</h2>
+            <p>${point.permit_ref || "None provided"}</p>
+              
+            <h2>Promoter</h2>
+            <p>${point.promoter || "None provided"}</p>
+              
+            <h2>Current status</h2>
+            <p>${
+              point.works_state_name ||
+              dayjs.tz(point.start_date, point.start_date_tz).diff(dayjs()) < 0
+                ? "Works in progress"
+                : dayjs.tz(point.end_date, point.start_date_tz).diff(dayjs()) <
+                  0
+                ? "Completed"
+                : "Upcoming"
+            }</p>
+              
+            <h2>Permit status</h2>
+            <p id="${point.se_id}__permit_status_desc">Loading...</p>
+              
+            <!--<h2>Info last updated</h2>
+            <p>${point.promoter || "None provided"}</p>
+              
+            <h2>Last updated one one.network</h2>
+            <p>${point.promoter || "None provided"}</p>-->
+          `
         )
-        .addTo(window.markerGroup);
+        .addTo(window.markerGroup)
+        .on("popupopen", function (e) {
+          console.log("OPENED", e);
+
+          const elementId = `${e.target.data.se_id}__permit_status_desc`;
+
+          getSpecificPointData(
+            e.target.data.se_id || e.target.data.entity_id,
+            e.target.data.phase_id
+          ).then((data) => {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+
+            el.innerText = data.swdata.permit_status_desc;
+          });
+        });
     });
   })
 );
