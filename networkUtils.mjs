@@ -92,6 +92,22 @@ export const promoters = [
       type: "grain",
     },
   },
+  {
+    id: "ofnl",
+    name: "Open Fibre Networks Limited",
+    aliases: [
+      "Open Fibre Networks Limited",
+      "Open Fibre Networks",
+      "Open Fibre",
+      "Independent Fibre Networks",
+      "Independent Fibre",
+      "Independent Fibre Networks Limited",
+    ],
+    icon: {
+      text: "OFNL",
+      type: "ofnl",
+    },
+  },
 ];
 
 const promoterAliases = promoters.reduce((acc, promoter) => {
