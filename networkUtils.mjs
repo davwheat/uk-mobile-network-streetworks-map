@@ -1,35 +1,113 @@
-export const promoterAliases = {
-  o2: ["O2", "02", "O 2", "Telefonica", "Telefónica"],
-  vf: ["Vodafone", "Vodaphone"],
-  "3/EE": ["T-Mobile", "T Mobile"],
-  ctil: ["CTIL", "cornerstone", "corner stone"],
-  bt: ["BT", "British Telecom"],
-  openreach: ["Openreach", "open reach"],
-  virgin: ["Virgin Media"],
-  cityfibre: ["CityFibre", "City Fibre"],
-};
+export const promoters = [
+  // Mobile networks
+  {
+    id: "o2",
+    name: "O2",
+    aliases: ["O2", "02", "O 2", "Telefonica", "Telefónica"],
+    icon: {
+      text: "O2",
+      type: "mobile",
+    },
+  },
+  {
+    id: "vf",
+    name: "Vodafone",
+    aliases: ["Vodafone", "Vodaphone"],
+    icon: {
+      text: "VF",
+      type: "mobile",
+    },
+  },
+  {
+    id: "3/EE",
+    name: "Three/EE",
+    aliases: ["T-Mobile", "T Mobile"],
+    icon: {
+      text: "3/EE",
+      type: "mobile",
+    },
+  },
+  {
+    id: "ctil",
+    name: "Cornerstone Networks",
+    aliases: ["Cornerstone", "CTIL"],
+    icon: {
+      text: "CTIL",
+      type: "mobile",
+    },
+  },
 
-const promoterIcons = {
-  o2: createPromoterIcon("O2", "mobile"),
-  vf: createPromoterIcon("VF", "mobile"),
-  "3/EE": createPromoterIcon("3/EE", "mobile"),
-  ctil: createPromoterIcon("CTIL", "mobile"),
-  bt: createPromoterIcon("BT", "bt"),
-  openreach: createPromoterIcon("OR", "bt"),
-  cityfibre: createPromoterIcon("CF", "cityfibre"),
-  virgin: createPromoterIcon("VM", "vm"),
-};
+  // Fixed broadband
+  {
+    id: "bt",
+    name: "BT",
+    aliases: ["BT", "British Telecom"],
+    icon: {
+      text: "BT",
+      type: "bt",
+    },
+  },
+  {
+    id: "or",
+    name: "Openreach",
+    aliases: ["Openreach", "open reach"],
+    icon: {
+      text: "OR",
+      type: "bt",
+    },
+  },
+  {
+    id: "virgin",
+    name: "Virgin Media",
+    aliases: ["Virgin", "Virgin Media"],
+    icon: {
+      text: "VM",
+      type: "vm",
+    },
+  },
+  {
+    id: "cf",
+    name: "CityFibre",
+    aliases: ["CityFibre", "City Fibre"],
+    icon: {
+      text: "CF",
+      type: "cityfibre",
+    },
+  },
+  {
+    id: "trooli",
+    name: "Trooli",
+    aliases: ["Trooli"],
+    icon: {
+      text: "TR",
+      type: "trooli",
+    },
+  },
+  {
+    id: "grain",
+    name: "Grain",
+    aliases: ["Grain"],
+    icon: {
+      text: "GR",
+      type: "grain",
+    },
+  },
+];
 
-const promoterNames = {
-  o2: "O2",
-  vf: "Vodafone",
-  "3/EE": "Three/EE",
-  ctil: "Cornerstone",
-  bt: "BT",
-  openreach: "Openreach",
-  virgin: "Virgin Media",
-  cityfibre: "CityFibre",
-};
+const promoterAliases = promoters.reduce((acc, promoter) => {
+  acc[promoter.id] = promoter.aliases;
+  return acc;
+}, {});
+
+const promoterIcons = promoters.reduce((acc, promoter) => {
+  acc[promoter.id] = createPromoterIcon(promoter.icon.text, promoter.icon.type);
+  return acc;
+}, {});
+
+const promoterNames = promoters.reduce((acc, promoter) => {
+  acc[promoter.id] = promoter.name;
+  return acc;
+}, {});
 
 function createPromoterIcon(name, type) {
   return L.divIcon({
