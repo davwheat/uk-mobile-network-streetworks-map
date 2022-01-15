@@ -1,9 +1,12 @@
+import { getPromoterStates } from "./settings.mjs";
+
 export const promoters = [
   // Mobile networks
   {
     id: "o2",
     name: "O2",
     aliases: ["O2", "02", "O 2", "Telefonica", "Telefónica"],
+    category: "Mobile network",
     icon: {
       text: "O2",
       type: "mobile",
@@ -13,6 +16,7 @@ export const promoters = [
     id: "vf",
     name: "Vodafone",
     aliases: ["Vodafone", "Vodaphone"],
+    category: "Mobile network",
     icon: {
       text: "VF",
       type: "mobile",
@@ -22,6 +26,7 @@ export const promoters = [
     id: "3/EE",
     name: "Three/EE",
     aliases: ["T-Mobile", "T Mobile"],
+    category: "Mobile network",
     icon: {
       text: "3/EE",
       type: "mobile",
@@ -31,6 +36,7 @@ export const promoters = [
     id: "ctil",
     name: "Cornerstone Networks",
     aliases: ["Cornerstone", "CTIL"],
+    category: "Mobile network",
     icon: {
       text: "CTIL",
       type: "mobile",
@@ -42,6 +48,7 @@ export const promoters = [
     id: "bt",
     name: "BT",
     aliases: ["BT", "British Telecom"],
+    category: "Fixed broadband",
     icon: {
       text: "BT",
       type: "bt",
@@ -51,6 +58,7 @@ export const promoters = [
     id: "or",
     name: "Openreach",
     aliases: ["Openreach", "open reach"],
+    category: "Fixed broadband",
     icon: {
       text: "OR",
       type: "bt",
@@ -60,6 +68,7 @@ export const promoters = [
     id: "virgin",
     name: "Virgin Media",
     aliases: ["Virgin", "Virgin Media"],
+    category: "Fixed broadband",
     icon: {
       text: "VM",
       type: "vm",
@@ -69,6 +78,7 @@ export const promoters = [
     id: "cf",
     name: "CityFibre",
     aliases: ["CityFibre", "City Fibre"],
+    category: "Fixed broadband",
     icon: {
       text: "CF",
       type: "cityfibre",
@@ -78,6 +88,7 @@ export const promoters = [
     id: "trooli",
     name: "Trooli",
     aliases: ["Trooli"],
+    category: "Fixed broadband",
     icon: {
       text: "TR",
       type: "trooli",
@@ -87,6 +98,7 @@ export const promoters = [
     id: "grain",
     name: "Grain",
     aliases: ["Grain"],
+    category: "Fixed broadband",
     icon: {
       text: "GR",
       type: "grain",
@@ -103,24 +115,57 @@ export const promoters = [
       "Independent Fibre",
       "Independent Fibre Networks Limited",
     ],
+    category: "Fixed broadband",
     icon: {
       text: "OFNL",
       type: "ofnl",
     },
   },
+  {
+    id: "toob",
+    name: "TOOB",
+    aliases: ["Toob"],
+    category: "Fixed broadband",
+    icon: {
+      text: "TOOB",
+      type: "toob",
+    },
+  },
+  {
+    id: "zzoomm",
+    name: "Zzoomm",
+    aliases: ["Zzoomm"],
+    category: "Fixed broadband",
+    icon: {
+      text: "ZOOM",
+      type: "zzoomm",
+    },
+  },
+  {
+    id: "netomnia",
+    name: "Netomnia",
+    aliases: ["Netomnia"],
+    category: "Fixed broadband",
+    icon: {
+      text: "NO",
+      type: "netomnia",
+    },
+  },
 ];
 
-const promoterAliases = promoters.reduce((acc, promoter) => {
+export const promoterIds = promoters.map((x) => x.id);
+
+export const promoterAliases = promoters.reduce((acc, promoter) => {
   acc[promoter.id] = promoter.aliases;
   return acc;
 }, {});
 
-const promoterIcons = promoters.reduce((acc, promoter) => {
+export const promoterIcons = promoters.reduce((acc, promoter) => {
   acc[promoter.id] = createPromoterIcon(promoter.icon.text, promoter.icon.type);
   return acc;
 }, {});
 
-const promoterNames = promoters.reduce((acc, promoter) => {
+export const promoterNames = promoters.reduce((acc, promoter) => {
   acc[promoter.id] = promoter.name;
   return acc;
 }, {});
@@ -143,20 +188,21 @@ function getPromoterId(dataPoint) {
   });
 }
 
-/**
- * @param {string} name
- */
 export function getPromoterIcon(dataPoint) {
   return promoterIcons[getPromoterId(dataPoint)];
 }
 
-/**
- * @param {string} name
- */
 export function getPromoterName(dataPoint) {
   return promoterNames[getPromoterId(dataPoint)];
 }
 
 export function isPromoterDataPoint(dataPoint) {
-  return getPromoterId(dataPoint) !== undefined;
+  const id = getPromoterId(dataPoint);
+
+  if (!id) return false;
+
+  const states = getPromoterStates();
+  if (!states[id]) return false;
+
+  return true;
 }
