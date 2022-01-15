@@ -151,6 +151,16 @@ export const promoters = [
       type: "netomnia",
     },
   },
+  {
+    id: "fibrus",
+    name: "Fibrus Networks",
+    aliases: ["fibrus networks"],
+    category: "Fixed broadband",
+    icon: {
+      text: "FIB",
+      type: "fibrus",
+    },
+  },
 ];
 
 export const promoterIds = promoters.map((x) => x.id);
