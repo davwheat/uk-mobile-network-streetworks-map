@@ -30,7 +30,7 @@
   <body>
     <div id="map"></div>
 
-    <div id="messages">
+    <div id="messages" aria-live="polite" role="status">
       <div id="failed-message" class="message">
         Failed to load work information.
       </div>
@@ -43,7 +43,7 @@
     </div>
 
     <div id="map-controls">
-      <button id="settings">
+      <button id="settings" aria-label="Map settings">
         <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
           <path
             fill="currentColor"
@@ -52,7 +52,7 @@
         </svg>
       </button>
 
-      <button id="geolocation">
+      <button id="geolocation" aria-label="Pan map to current location">
         <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
           <path
             fill="currentColor"
